@@ -16,9 +16,15 @@ Fügt deinen privaten SSH-Schlüssel (`~/.ssh/id_rsa`) zum SSH-Agenten hinzu, so
 
 Stellt eine SSH-Verbindung zum Server mit der IP-Adresse `217.86.148.100` auf Port `6789` als Benutzer `root` her.
 Optionen:
-`-oKexAlgorithms=+diffie-hellman-group1-sha1`: Fügt einen spezifischen Schlüsselwechselalgorithmus hinzu, der möglicherweise von älteren Servern benötigt wird.
-`-oHostKeyAlgorithms=+ssh-rsa`: Akzeptiert SSH-RSA-Host-Schlüssel (eigentlich veraltet).
-`-oPubkeyAcceptedKeyTypes=+ssh-rsa`: Akzeptiert RSA-Öffentlichen Schlüssel (eigentlich veraltet).
+- `-oKexAlgorithms=+diffie-hellman-group1-sha1`: 
+  Legt das Schlüsselaustauschverfahren fest, das SSH verwenden soll. Hier wird `diffie-hellman-group1-sha1` explizit zugelassen, da dieses ältere, möglicherweise unsichere Verfahren in einigen Umgebungen erforderlich ist.
+
+- `-oHostKeyAlgorithms=+ssh-rsa`: 
+  Erlaubt die Verwendung des `ssh-rsa`-Algorithmus für die Host-Schlüsselüberprüfung. Dies ist nützlich, wenn der Server ältere Verschlüsselungsprotokolle verwendet.
+
+- `-oPubkeyAcceptedKeyTypes=+ssh-rsa`: 
+  Legt fest, dass der SSH-Befehl `ssh-rsa` als akzeptierte Schlüsseltyp zur Authentifizierung zulässt. Auch dies ist notwendig, wenn das entfernte System ältere Algorithmen benötigt.
+
 ## 2. Archiv erstellen
 ```bash
 tar -czf ~/docs.tar.gz /var/www/html/mobidas/wws/docs/  /var/www/html/mobidas/wws/public/document/ /var/www/html/mobidas/wws/public/file/ /var/www/html/mobidas/wws/public/item1/ /var/www/html/mobidas/wws/public/item2
@@ -26,7 +32,7 @@ tar -czf ~/docs.tar.gz /var/www/html/mobidas/wws/docs/  /var/www/html/mobidas/ww
 Aufschlüsselung:
 
 `tar -czf ~/docs.tar.gz /var/www/html/Pfad1 /var/www/html/Pfad2 /var/www/html/Pfad3`:
-Erzeugt ein komprimiertes Archiv (.tar.gz) mit dem Namen `docs.tar.gz` im Home-Verzeichnis (~/).
+Erzeugt ein komprimiertes Archiv (.tar.gz) mit dem Namen `docs.tar.gz` im Home-Verzeichnis (`~/`).
 Optionen:
 - -c: Erstellen eines neuen Archivs.
 - -z: Komprimieren des Archivs mit gzip.
@@ -101,5 +107,6 @@ Aufschlüsselung:
 
 ### 4. Verzeichnisberechtigungen setzen
 - `find /var/www/ppl.beveb.com/public/wws -type d -exec chmod 755 {} \;`: Setzt die Berechtigungen für alle Verzeichnisse auf `755` (Lesen, Schreiben und Ausführen für den Eigentümer; Lesen und Ausführen für Gruppe und andere Benutzer).
+
 ### 5. Dateiberechtigungen setzen
 - `find /var/www/ppl.beveb.com/public/wws -type f -exec chmod 644 {} \;`: Setzt die Berechtigungen für alle Dateien auf `644` (Lese- und Schreibrechte für den Eigentümer, nur Leserechte für Gruppe und andere Benutzer).
